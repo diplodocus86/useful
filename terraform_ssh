@@ -1,0 +1,15 @@
+resource "openstack_networking_floatingip_v2" "floatingip" {
+  count = var.replicas * var.floatingip
+  pool  = "external-network"
+
+  provisioner "local-exec" {
+    command    = "ssh-keygen -R ${self.address}"
+    on_failure = continue
+  }
+
+  provisioner "local-exec" {
+    command    = "ssh-keygen -R ${self.address}"
+    on_failure = continue
+    when       = destroy
+  }
+}
